@@ -5,7 +5,7 @@ import {
   CheckoutButtonComponent,
   cartLocalization,
 } from 'react-shopping-cart';
-
+import { Button } from 'semantic-ui-react';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'animate.css/animate.min.css';
 import 'font-awesome/css/font-awesome.min.css';
@@ -26,43 +26,19 @@ const iPadCaseLocalization = {
 };
 
 class App extends PureComponent {
-  //   constructor(props){
-  //     super(props);
-  //   this.state = {
-  //     transaction_id: []
-  //   }
-  // }
-  
-  componentDidMount(){
-    this.handleClick();
-  }
-  
+
     handleClick = () => {
-      fetch("http://localhost:5001/v1/user-journey", {
+      fetch("http://localhost:5000/v1/userjourney/merchant", {
         method: "POST",
         headers: { "Content-Type" : "application/json" }
-      })
-      .then(function(response) {
-        if (response.status >= 400){
-          throw new Error("Something went wrong from the server");
-        }
-        return response.json();
-      })
-      .then(data => {
-        if (data === "success" ) {
-          this.refs.msg.show("Some Success Text or component", {
-            time: 2000,
-            type: "success"
-          });
-        }
-        this.setState({transaction_id: data})
-        // transaction_id: data
-        console.log(data)
-      })
-      .catch(function(err) {
-        console.log(err);
-      });
-      console.log("this is the transaction_id", this.transaction_id);
+      }).then(this.handleResponse);
+    }
+    
+    handleResponse = (response) => {
+      if(!response.ok) {
+        return Promise.reject(response.statusText);
+      }
+      return console.log(response.json());
     }
   
   
@@ -138,8 +114,7 @@ class App extends PureComponent {
   updateProduct = (key, updatedProduct) => void console.log(':)');
 
   removeProduct = key => void console.log(':C');
-  
-  
+
   handleNext = (ev) => {
     if (ev.keyCode === 13) {
         console.log('Enter!');
@@ -152,6 +127,7 @@ class App extends PureComponent {
       addProduct,
       generateProductKey,
       updateProduct,
+      handleClick,
       removeProduct,
       state,
     } = this;
@@ -164,32 +140,33 @@ class App extends PureComponent {
       product,
     } = state;
     
-    const checkoutButtonElement =
-      <CheckoutButtonComponent
+    const checkoutButtonElement = 
+    <CheckoutButtonComponent
         grandTotal={500}
-        // onClick={this.handleClick}
         hidden={false}
         checkoutURL="http://localhost:3000/user-journey"
         currency="GBP"
         getLocalization={getCheckoutButtonLocalization}
-      />;
+        handleClick={this.handleClick}
+      />
+
     return (
       <div className="container">
+      
         <ProductComponent
           {...product}
           checkoutButton={checkoutButtonElement}
           onAddProduct={
             addProduct
             // Help product to get into the cart
-          }
+          } 
           generateProductKey={
             generateProductKey
                     // create product key as you wish
           }
           getLocalization={getProductLocalization}
         />
-
-
+        
         <CartComponent
           products={
             products
@@ -213,8 +190,10 @@ class App extends PureComponent {
           isCartEmpty={
             false
           }
-          getLocalization={getCartLocalization}
+          // getLocalization={getCartLocalization}
         />
+        <Button onClick={handleClick} 
+        > Get transaction_id </Button>
       </div>
     );
   }
