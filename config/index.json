@@ -1,0 +1,8 @@
+{
+    "server_url": "http://localhost:8100/pointslink",
+    "port": "5000",
+    "auth": {
+        "token": "auth5cur3",
+        "secret": "x9O1LkXjyxpRiyhNRX8T"
+    }
+}

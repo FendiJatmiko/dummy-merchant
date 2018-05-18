@@ -1,0 +1,25 @@
+{
+  "name": "merchan01",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "cors": "^2.8.4",
+    "intl-messageformat": "^2.2.0",
+    "nodemon": "^1.17.3",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "react-intl": "^2.4.0",
+    "react-scripts": "1.1.4",
+    "react-shopping-cart": "^1.8.1",
+    "semantic-ui-react": "^0.80.0"
+  },
+  "scripts": {
+    "start": "PORT=3030 react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "client": "cd client && yarn start",
+    "server": "nodemon server/server.js",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+  }
+}
