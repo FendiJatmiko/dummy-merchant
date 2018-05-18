@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { PureComponent} from 'react';
 import {
   CartComponent,
   ProductComponent,
@@ -25,21 +25,37 @@ const iPadCaseLocalization = {
   USD: '$',
 };
 
-class App extends PureComponent {
+
+class App extends PureComponent{
+
+    getTransactionID = (ID) => {
+      return ID.message.create.transaction_id
+    }
 
     handleClick = () => {
-      fetch("http://localhost:5000/v1/userjourney/merchant", {
+      fetch("http://localhost:5000/v1/tx/merchant", {
         method: "POST",
         headers: { "Content-Type" : "application/json" }
-      }).then(this.handleResponse);
+      }).then( (response) => {
+        return response.json();
+      }).then( (result) => {
+        void this.setState({
+            data: this.getTransactionID(result)
+        })
+      //  console.log('parsed json', this.getTransactionID(result))
+      })
+      .catch( (ex) => {
+        console.log('parsing failed', ex)
+      })
+      console.log(this.state.data)
     }
-    
-    handleResponse = (response) => {
-      if(!response.ok) {
-        return Promise.reject(response.statusText);
-      }
-      return console.log(response.json());
-    }
+  
+    // handleResponse = (response) => {
+    //   if(!response.ok) {
+    //     return Promise.reject(response.statusText);
+    //   }
+    //     return response.json();
+    // }
   
   
   state = {
@@ -144,7 +160,7 @@ class App extends PureComponent {
     <CheckoutButtonComponent
         grandTotal={500}
         hidden={false}
-        checkoutURL="http://localhost:3000/user-journey"
+        checkoutURL={"http://localhost:3000/user-journey/" + this.state.data}
         currency="GBP"
         getLocalization={getCheckoutButtonLocalization}
         handleClick={this.handleClick}
@@ -193,7 +209,9 @@ class App extends PureComponent {
           // getLocalization={getCartLocalization}
         />
         <Button onClick={handleClick} 
-        > Get transaction_id </Button>
+        > Get transaction_id 
+        </Button> 
+        <p>{this.state.data}</p>
       </div>
     );
   }
