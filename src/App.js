@@ -33,7 +33,7 @@ class App extends PureComponent{
     }
 
     handleClick = () => {
-      fetch("http://localhost:5000/v1/tx/merchant", {
+      fetch("http://localhost:5000/v1/tx/create", {
         method: "POST",
         headers: { "Content-Type" : "application/json" }
       }).then( (response) => {
