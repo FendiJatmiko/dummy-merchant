@@ -49,15 +49,7 @@ class App extends PureComponent{
       })
       console.log(this.state.data)
     }
-  
-    // handleResponse = (response) => {
-    //   if(!response.ok) {
-    //     return Promise.reject(response.statusText);
-    //   }
-    //     return response.json();
-    // }
-  
-  
+   
   state = {
     products: {},
     product: {
@@ -160,7 +152,7 @@ class App extends PureComponent{
     <CheckoutButtonComponent
         grandTotal={500}
         hidden={false}
-        checkoutURL={"http://localhost:3000/user-journey/" + this.state.data}
+        checkoutURL={"http://localhost:5000/user-journey/" + this.state.data}
         currency="GBP"
         getLocalization={getCheckoutButtonLocalization}
         handleClick={this.handleClick}
@@ -168,7 +160,8 @@ class App extends PureComponent{
 
     return (
       <div className="container">
-      
+		  <h2 class="tittle"> This is dummy merchant pointsNet</h2> 
+		  <br/>
         <ProductComponent
           {...product}
           checkoutButton={checkoutButtonElement}
