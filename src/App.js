@@ -162,9 +162,14 @@ class App extends PureComponent{
       <div className="container">
 		  <h2 class="tittle"> This is dummy merchant pointsNet</h2> 
 		  <br/>
+        <Button onClick={handleClick} 
+            > Get transaction_id 
+        </Button> 
+            <p>{this.state.data}</p>
         <ProductComponent
           {...product}
           checkoutButton={checkoutButtonElement}
+          
           onAddProduct={
             addProduct
             // Help product to get into the cart
@@ -193,18 +198,12 @@ class App extends PureComponent{
             removeProduct
             // Remove something
           }
-          checkoutButton={
-            checkoutButtonElement
-          }
           isCartEmpty={
             false
           }
           // getLocalization={getCartLocalization}
         />
-        <Button onClick={handleClick} 
-        > Get transaction_id 
-        </Button> 
-        <p>{this.state.data}</p>
+        
       </div>
     );
   }
