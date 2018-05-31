@@ -160,7 +160,7 @@ class App extends PureComponent{
 
     return (
       <div className="container">
-		  <h2 class="tittle"> This is dummy merchant pointsNet</h2> 
+		  <h2 className="tittle"> This is dummy merchant pointsNet</h2> 
 		  <br/>
         <Button onClick={handleClick} 
             > Get transaction_id 
