@@ -33,9 +33,33 @@ class App extends PureComponent{
     }
 
     handleClick = () => {
+	 var req_data = {
+	 	order_id: "12345",
+		total_amount: 2500000,
+		currency: "MYR",
+		items : [{
+			name: "Iphone",
+			category: "gadget",
+			price: 2500000,
+			quantity: 1,
+		}],
+		customer: {
+			first_name: "foo",
+			last_name: "bar",
+			email: "foobar@mail.com",
+			phone: "0987654123456",
+		},
+		expiry: {
+			start_time: "2018-05-26T18:24:34+07:00",
+			unit: "minutes",
+			duration: 60,
+		}
+	 }
+
       fetch("http://localhost:5000/v1/tx/create", {
         method: "POST",
-        headers: { "Content-Type" : "application/json" }
+        headers: { "Content-Type" : "application/json" },
+		  body: JSON.stringify(req_data)
       }).then( (response) => {
         return response.json();
       }).then( (result) => {
@@ -49,7 +73,15 @@ class App extends PureComponent{
       })
       console.log(this.state.data)
     }
-   
+
+    // handleResponse = (response) => {
+    //   if(!response.ok) {
+    //     return Promise.reject(response.statusText);
+    //   }
+    //     return response.json();
+    // }
+
+
   state = {
     products: {},
     product: {
@@ -120,7 +152,6 @@ class App extends PureComponent{
     `${id}/${Object.entries(properties).join('_')}`;
 
   updateProduct = (key, updatedProduct) => void console.log(':)');
-
   removeProduct = key => void console.log(':C');
 
   handleNext = (ev) => {
@@ -147,8 +178,8 @@ class App extends PureComponent{
       products,
       product,
     } = state;
-    
-    const checkoutButtonElement = 
+
+    const checkoutButtonElement =
     <CheckoutButtonComponent
         grandTotal={500}
         hidden={false}
@@ -160,27 +191,21 @@ class App extends PureComponent{
 
     return (
       <div className="container">
-		  <h2 className="tittle"> This is dummy merchant pointsNet</h2> 
-		  <br/>
-        <Button onClick={handleClick} 
-            > Get transaction_id 
-        </Button> 
-            <p>{this.state.data}</p>
+
         <ProductComponent
           {...product}
-          checkoutButton={checkoutButtonElement}
-          
+
           onAddProduct={
             addProduct
             // Help product to get into the cart
-          } 
+          }
           generateProductKey={
             generateProductKey
                     // create product key as you wish
           }
           getLocalization={getProductLocalization}
         />
-        
+
         <CartComponent
           products={
             products
@@ -196,14 +221,19 @@ class App extends PureComponent{
           currency="GBP"
           onRemoveProduct={
             removeProduct
-            // Remove something
+          }
+          checkoutButton={
+            checkoutButtonElement
           }
           isCartEmpty={
             false
           }
           // getLocalization={getCartLocalization}
         />
-        
+        <Button onClick={handleClick}
+        > Get transaction_id
+        </Button>
+        <p>{this.state.data}</p>
       </div>
     );
   }
